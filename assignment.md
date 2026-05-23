@@ -40,3 +40,6 @@ create a custom validate function for gender
 Add require, min, minlength, lowercase, trim , unique
 Add timestamp to the user schema
 API level validation on Patch request and post signup API
+Install validator
+Explore validator  library functions and used it for password , email and so on
+
