@@ -42,4 +42,9 @@ Add timestamp to the user schema
 API level validation on Patch request and post signup API
 Install validator
 Explore validator  library functions and used it for password , email and so on
+never trust req.body
+
+validate signup API
+install becrypt package
+create passwordhashed using becrypt
 
