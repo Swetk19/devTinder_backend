@@ -34,3 +34,8 @@ API :- get user by email
 GET/feed :- get all the users from database
 
 explore the mongoose documentation for model methods
+
+explore schema type options from the documentation
+create a custom validate function for gender
+Add require, min, minlength, lowercase, trim , unique
+Add timestamp to the user schema
