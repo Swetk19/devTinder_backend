@@ -19,3 +19,8 @@ create a free cluster on MongoDB official website (Mongo Atlas)
 install Mongoose library
 connect your application to the database "Connection-url"/devTinder
 call the connectDB function and connect to database before starting application on 3000
+
+create userschema and user Model
+create POST/ signup API to add data to database
+PUSH some documents using API calls from postman
+error handling using try catch
