@@ -48,3 +48,5 @@ validate signup API
 install becrypt package
 create passwordhashed using becrypt
 
+create login API compare password and throw error if email password invalid
+
