@@ -24,3 +24,7 @@ create userschema and user Model
 create POST/ signup API to add data to database
 PUSH some documents using API calls from postman
 error handling using try catch
+
+difference between javascript object and json
+Add the express.json() middleware to your app
+make the signup API dynamic to receive data from the end user

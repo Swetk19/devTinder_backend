@@ -3,16 +3,20 @@ require('dotenv').config();
 const connectDatabase = require("./config/database")
 const app = express();
 const User = require("./models/user")
+app.use(express.json())
 
 app.post("/signup", async(req, res) => {
-    const user = new User({
-        firstName: "sweta",
-        lastName: "kumari",
-        emailId: "swetaraj821@gmail.com",
-        password: "sweta@19",
-    })
-    await user.save()
-    res.send("user added successfully")
+    //creating new instance of the user model
+    const user = new User(req.body)
+    try{
+        await user.save()
+        console.log("Saved user:", user)
+        res.send("user added successfully")
+    }
+    catch(err){
+        console.log("Error:", err)
+        res.status(400).send("Error adding user")
+    }   
 });
 
 connectDatabase()
