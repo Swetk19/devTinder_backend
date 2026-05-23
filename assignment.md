@@ -15,3 +15,7 @@ difference between ~ and ^ ?
 what are dependencies?
 what is the use of "-g" while npm install
 >>>>>>> 782350825772e20f4bff7f3d114c095547106e6a
+create a free cluster on MongoDB official website (Mongo Atlas)
+install Mongoose library
+connect your application to the database "Connection-url"/devTinder
+call the connectDB function and connect to database before starting application on 3000
