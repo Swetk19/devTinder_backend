@@ -28,3 +28,9 @@ error handling using try catch
 difference between javascript object and json
 Add the express.json() middleware to your app
 make the signup API dynamic to receive data from the end user
+
+user.findOne with dublicate emailId which object it will return
+API :- get user by email
+GET/feed :- get all the users from database
+
+explore the mongoose documentation for model methods

@@ -19,6 +19,62 @@ app.post("/signup", async(req, res) => {
     }   
 });
 
+//get user by email
+app.get("/user", async(req, res) => {
+    const userEmail = req.body.emailId;
+    
+    try{
+        const users = await User.find({emailId: userEmail})
+        if(users.length === 0){
+            return res.status(404).send("User not found")
+        }else{
+            res.send(users)
+        }
+        
+    }
+    catch(error){
+        res.status(400).send("Error fetching user")
+    }
+})
+
+//Feed API GET/feed :- get all the users from database
+app.get("/feed", async(req, res) => {
+    try{
+        const users = await User.find({})
+        res.send(users)
+    }
+    catch(error){
+        res.status(400).send("Error fetching feed") 
+    }
+})
+
+//delete user by email
+app.delete("/user", async(req, res) => {
+    const userId = req.body.userId;
+    try{
+        const deletedUser = await User.findByIdAndDelete(userId)
+        res.send("User deleted successfully")
+    }
+    catch(error){
+        res.status(400).send("Error deleting user")
+    }
+})
+
+//update data of the user
+app.patch("/user", async(req, res) => {
+    const userId = req.body.userId;
+    const data = req.body
+    try{
+        const user = await User.findByIdAndUpdate({
+            _id: userId},
+            data, { new: true, returnDocument: "after" })
+        res.send(user)
+    }
+    catch(error){
+        res.status(400).send("Error updating user")
+    }
+})
+
 connectDatabase()
 .then(() => {
     console.log("Database connected successfully")
