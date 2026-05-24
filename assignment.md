@@ -61,3 +61,4 @@ create userAuth middleware
 add userAuth in profile API
 set  the expiry of cookie and  JWT tokens to 7 days
 
+Read more about Indexes
