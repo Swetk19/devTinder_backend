@@ -50,3 +50,10 @@ create passwordhashed using becrypt
 
 create login API compare password and throw error if email password invalid
 
+install cookie parser
+send dummy cookie to user
+create GET/profile API and check if you get the cookie back
+Install jsonwebtoken
+In login API after email and password validation create JWT token a send it to a user in cookies
+Read the cookie inside your profile api and find the logged in user
+

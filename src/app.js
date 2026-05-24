@@ -6,22 +6,21 @@ const User = require("./models/user")
 const {validateSignupData} = require("./utils/validation")
 const bcrypt = require("bcrypt")
 app.use(express.json())
+const cookieParser = require("cookie-parser")
+app.use(cookieParser())
+const jwt = require("jsonwebtoken")
 
 app.post("/signup", async(req, res) => {
-    //validation of data
     try{
-    validateSignupData(req);
-    const {firstName, lastName, emailId, password} = req.body;
-    //Encrypt the  password
+        validateSignupData(req);
+        const {firstName, lastName, emailId, password} = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    console.log("hashedPassword:", hashedPassword) 
+        const hashedPassword = await bcrypt.hash(password, 10)
 
-    const user = new User({
-        firstName, lastName, emailId, password: hashedPassword
-    })
+        const user = new User({
+            firstName, lastName, emailId, password: hashedPassword
+        })
         await user.save()
-        console.log("Saved user:", user)
         res.send("user added successfully")
     }
     catch(err){
@@ -29,8 +28,6 @@ app.post("/signup", async(req, res) => {
     }   
 });
 
-
-//login API
 app.post("/login", async(req, res) => {
     try{
         const {emailId, password} = req.body;
@@ -40,6 +37,8 @@ app.post("/login", async(req, res) => {
         }
         const isPasswordValid = await bcrypt.compare(password, user.password)
         if(isPasswordValid){
+            const token = await jwt.sign({_id: user._id}, "DEV@Tinder$790");
+            res.cookie("token", token);
             res.send("login successfull")
         }else{
             throw new Error("Invalid credential")
@@ -50,13 +49,27 @@ app.post("/login", async(req, res) => {
     }
 })
 
+app.get("/profile", async (req, res) => {
+    try {
+        const cookies = req.cookies;
+        const { token } = cookies;
+        if (!token) {
+            throw new Error("Invalid Token");
+        }
+        const decodedMessage = await jwt.verify(token, "DEV@Tinder$790");
+        const { _id } = decodedMessage;
+        const user = await User.findById(_id);
+        if (!user) {
+            throw new Error("User does not exist");
+        }
+        res.send(user);
+    } catch (err) {
+        res.status(400).send("ERROR : " + err.message);
+    }
+});
 
-
-
-//get user by email
 app.get("/user", async(req, res) => {
     const userEmail = req.body.emailId;
-    
     try{
         const users = await User.find({emailId: userEmail})
         if(users.length === 0){
@@ -64,14 +77,12 @@ app.get("/user", async(req, res) => {
         }else{
             res.send(users)
         }
-        
     }
     catch(error){
         res.status(400).send("Error fetching user")
     }
 })
 
-//Feed API GET/feed :- get all the users from database
 app.get("/feed", async(req, res) => {
     try{
         const users = await User.find({})
@@ -82,7 +93,6 @@ app.get("/feed", async(req, res) => {
     }
 })
 
-//delete user by email
 app.delete("/user", async(req, res) => {
     const userId = req.body.userId;
     try{
@@ -94,7 +104,6 @@ app.delete("/user", async(req, res) => {
     }
 })
 
-//update data of the user
 app.patch("/user", async(req, res) => {
     const userId = req.params?.userId;
     const data = req.body
@@ -109,9 +118,11 @@ app.patch("/user", async(req, res) => {
         if(data?.skills.length > 10){
             throw new Error("Skills can not be more than 10")
         }
-        const user = await User.findByIdAndUpdate({
-            _id: userId},
-            data, { new: true, returnDocument: "after", runValidators: true})
+        const user = await User.findByIdAndUpdate(
+            {_id: userId},
+            data, 
+            { new: true, returnDocument: "after", runValidators: true}
+        )
         res.send(user)
     }
     catch(error){
@@ -123,11 +134,9 @@ connectDatabase()
 .then(() => {
     console.log("Database connected successfully")
     app.listen(3000, () => {
-    console.log("server is successfully listening on port 3000")
-})
+        console.log("server is successfully listening on port 3000")
+    })
 })
 .catch((err) => {
     console.log("Error connecting to database: ", err);
 })
-
-
