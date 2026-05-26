@@ -52,6 +52,7 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl:{
         type: String,
+        default: "https://geographyandyou.com/images/user-profile.png" 
     },
     about:{
         type: String,
