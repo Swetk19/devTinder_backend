@@ -11,10 +11,10 @@ const requestRouter = require("./routes/request")
 const userRouter = require("./routes/user")
 const cors = require("cors")
 
-app.use(cors(({
+app.use(cors({
   origin: "https://devtinder-frontend-clvw.onrender.com",
   credentials: true,
-})))
+}))
 app.use(cookieParser())
 app.use(express.json())
 app.use("/", authRouter)
